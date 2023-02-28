@@ -52,7 +52,6 @@ int main(void) {
         printf("%s BEARS!\n", s);
     } else {
         printf("%s CARDINAL!\n", s);
-        
     }
 
     return 0;
