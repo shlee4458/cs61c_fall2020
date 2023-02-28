@@ -6,6 +6,8 @@
 int ll_has_cycle(node *head) {
     node *tortoise = head;
     node *hare = head;
+
+    /* while any of the statement inside the loop returns something */
     while (1) {
 
         /** If hare reaches the end, return false*/
@@ -28,7 +30,6 @@ int ll_has_cycle(node *head) {
 }
 
 int main() {
-    
     /* Initiate node one and two */
     struct node *one = (struct node *) malloc(sizeof(struct node));                                                                                                                                                                                                                
     one->next = (struct node *) malloc(sizeof(struct node));
@@ -56,5 +57,4 @@ int main() {
     /* Test the non cyclical */
     result = ll_has_cycle(one);
     printf("%d", result);
-   
 }
