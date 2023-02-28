@@ -1,9 +1,9 @@
-1.
-2.
-3.
-4.
-5.
-6.
-7.
-8.
-9.
+1. (gdb) r arg1 arg2
+2. (gdb) b:hello.c:6
+3. (gdb) continue
+4. (gdb) step or next
+5. (gdb) continue
+6. (gdb) print expression
+7. (gdb) display
+8. (gdb) info variables
+9. (gdb) q
