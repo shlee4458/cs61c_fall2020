@@ -56,7 +56,6 @@ Image *readData(char *filename)
 	img->image = color;
 
 	/* Iterate over rows and cols to get r, g, b values and assign it to the Color instances */
-
 	for (int i = 0; i < total_pixels; i++) {
 			/* Initiate Color instance */
 			color[i] = (Color *) malloc(sizeof(Color));
@@ -64,11 +63,6 @@ Image *readData(char *filename)
 			
 			/* Read R, G, B from the file */
 			fscanf(fp, "%hhu %hhu %hhu", &pixel->R, &pixel->G, &pixel->B);
-			
-			/* Assign R, G, B values */
-			// pixel->R = R;
-			// pixel->G = G;
-			// pixel->B = B;
 	}
 
 	/* Close the file */
@@ -80,13 +74,17 @@ Image *readData(char *filename)
 //Given an image, prints to stdout (e.g. with printf) a .ppm P3 file with the image's data.
 void writeData(Image *image)
 {
-	//YOUR CODE HERE	
+	//YOUR CODE HERE
+	/* Define Variables */
 	uint32_t row;  uint32_t col;
 	row = image->rows;
 	col = image->cols;
 	Color **color = image->image;
 
+	/* Print header */
 	printf("P3\n%d %d\n255\n", col, row);
+	
+	/* Print RGB values for individual Colors */
 	for (int r = 0; r < row; r++) {
 		for (int c = 0; c < col - 1; c++) {
 			printf("%3hhu %3hhu %3hhu   ", (*color)->R, (*color)->G, (*color)->B);
@@ -101,6 +99,7 @@ void writeData(Image *image)
 void freeImage(Image *image)
 {
 	//YOUR CODE HERE
+	/* Define Variable */
 	int total_pixels = image->rows * image->cols;
 
 	/* Free individual color instance -> array of colors -> Image */
