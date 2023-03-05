@@ -1,7 +1,7 @@
-1.
-2.
-3.
-4.
-5.
-6.
-7.
+1.clean
+2.%.o : %.c
+3.gcc
+4.c99
+5.%
+6.Core Unix Operating System
+7. line 26 will call line 31 and 32
