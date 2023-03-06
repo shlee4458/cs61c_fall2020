@@ -22,12 +22,43 @@
 Color *evaluateOnePixel(Image *image, int row, int col)
 {
 	//YOUR CODE HERE
+	int idx = row * image->cols + col; // find the index of the color
+	Color *newColor = (Color *) malloc(sizeof(Color)); // create a memory for the color
+
+	/* Get Color from the image at idx and assign it into the Color instance */
+	newColor = image->image[idx];
+	int b_bin = (newColor->B) & 1; // get the LSB value of the B channel in the color
+	newColor->R = b_bin * 255;
+	newColor->G = b_bin * 255;
+	newColor->B = b_bin * 255;
+
+	/* Return the color */
+	return newColor;
 }
 
 //Given an image, creates a new image extracting the LSB of the B channel.
 Image *steganography(Image *image)
 {
 	//YOUR CODE HERE
+	int ROW = image->rows;
+	int COL = image->cols;
+	int idx;
+
+	/* Create a new memory for image */
+	Image *steg_image = (Image *) malloc(sizeof(Image));
+	steg_image->rows = ROW;
+	steg_image->cols = COL;
+	steg_image->image = (Color **) malloc(sizeof(Color *) * ROW * COL);
+
+	/* Loop over all the grid in the image and get the Color instance in each grid */
+	for (int r = 0; r < ROW; r++) {
+		for (int c = 0; c < COL; c++) {
+			idx = r * COL + c; // Find index of the array
+			steg_image->image[idx] = evaluateOnePixel(image, r, c); // Assign that into the newly Created image
+		}
+	}
+
+	return steg_image;
 }
 
 /*
@@ -46,4 +77,14 @@ Make sure to free all memory before returning!
 int main(int argc, char **argv)
 {
 	//YOUR CODE HERE
+	if (argc != 2) {
+		printf("%s", argv[0]);
+		return -1;
+	}
+
+	Image *image = readData(argv[1]); // load the file to the image struct
+	Image *steg_image = steganography(image); // decode the loaded image
+	writeData(steg_image); // print the image 
+	free(image); 
+	free(steg_image);
 }
