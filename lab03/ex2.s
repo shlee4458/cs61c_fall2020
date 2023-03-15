@@ -37,31 +37,40 @@ main:
     sw s3, 12(sp)
     sw ra, 16(sp)
     # END PROLOGUE
-    addi t0, x0, 0
+    addi t0, x0, 0 # t0 = k
     addi s0, x0, 0
     la s1, source
-    la s2, dest
+    la s2, dest # s2 = dest array
 loop:
-    slli s3, t0, 2
-    add t1, s1, s3
-    lw t2, 0(t1)
-    beq t2, x0, exit
-    add a0, x0, t2
+
+    # first line of the for loop
+    slli s3, t0, 2 # move pointer, t0 = k
+    add t1, s1, s3 # t1: address of the source at k / move the pointer to source by s3
+    lw t2, 0(t1) # load the element from the source
+    beq t2, x0, exit # exit if t2(source[k]) == 0
+
+    # second line of for loop (RHS)
+    add a0, x0, t2 # a0 = t2 will be the argument to the fun function
     addi sp, sp, -8
-    sw t0, 0(sp)
-    sw t2, 4(sp)
-    jal fun
-    lw t0, 0(sp)
-    lw t2, 4(sp)
-    addi sp, sp, 8
-    add t2, x0, a0
-    add t3, s2, s3
-    sw t2, 0(t3)
-    add s0, s0, t2
-    addi t0, t0, 1
+    sw t0, 0(sp) # store t0 = k
+    sw t2, 4(sp) # store t2 = source[k]
+    jal fun # call fun function
+    lw t0, 0(sp) # load the stored k value
+    lw t2, 4(sp) # load the stored source[k]
+    addi sp, sp, 8 # move the stack pointer back up
+
+    # second line of for loop (LHS)
+    add t2, x0, a0 # t2 = return value of the fun function
+    add t3, s2, s3 # t3 = pointer to the dest array at k
+    sw t2, 0(t3) # store t2 at t3
+    add s0, s0, t2 # s0 is the sum, add return value of the fun function to the sum
+    addi t0, t0, 1 #
     jal x0, loop
 exit:
-    add a0, x0, s0
+
+    # return sum;
+    add a0, x0, s0 # a0 = s0 = sum will be the return value of the main; sum
+    
     # BEGIN EPILOGUE
     lw s0, 0(sp)
     lw s1, 4(sp)
